@@ -8,7 +8,7 @@ import org.scalatest.junit.JUnitRunner
 import Anagrams._
 
 @RunWith(classOf[JUnitRunner])
-class AnagramsSuite extends FunSuite  {
+class AnagramsSuite extends FunSuite {
 
   test("wordOccurrences: abcd") {
     assert(wordOccurrences("abcd") === List(('a', 1), ('b', 1), ('c', 1), ('d', 1)))
@@ -38,12 +38,19 @@ class AnagramsSuite extends FunSuite  {
   }
 
 
-
   test("subtract: lard - r") {
     val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
     val r = List(('r', 1))
     val lad = List(('a', 1), ('d', 1), ('l', 1))
     assert(subtract(lard, r) === lad)
+  }
+
+
+  test("subtract: ohlala - l") {
+    val ohlala = List(('a', 2), ('h', 1), ('l', 2), ('o', 1))
+    val l = List(('l', 1))
+    val res = List(('a', 2), ('h', 1), ('l', 1), ('o', 1))
+    assert(subtract(ohlala, l) === res)
   }
 
 

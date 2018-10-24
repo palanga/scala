@@ -1,7 +1,9 @@
+import forcomp.Anagrams.Word
+
 package object forcomp {
   val dictionaryPath = List("forcomp", "linuxwords.txt")
 
-  def loadDictionary = {
+  def loadDictionary: List[Word]  = {
     val wordstream = Option {
       getClass.getResourceAsStream(dictionaryPath.mkString("/"))
     } orElse {
