@@ -53,16 +53,37 @@ package object scalashop {
 
     var i = 0
     var j = 0
-    var valuesSum = 0
+
+    var redSum = 0
+    var greenSum = 0
+    var blueSum = 0
+    var alphaSum = 0
+
+    var currentRGBA = 0
+
     while (i < boxWidth) {
       j = 0
+
       while (j < boxHeight) {
-        valuesSum += src(i + xStart, j + yStart)
+        currentRGBA = src(i + xStart, j + yStart)
+
+        redSum += red(currentRGBA)
+        greenSum += green(currentRGBA)
+        blueSum += blue(currentRGBA)
+        alphaSum += alpha(currentRGBA)
+
         j += 1
       }
+
       i += 1
     }
-    valuesSum / boxDimension
+
+    rgba(
+      redSum / boxDimension,
+      greenSum / boxDimension,
+      blueSum / boxDimension,
+      alphaSum / boxDimension
+    )
   }
 
 }
