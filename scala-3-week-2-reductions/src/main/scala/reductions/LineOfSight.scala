@@ -113,7 +113,22 @@ object LineOfSight {
    */
   def downsweepSequential(input: Array[Float], output: Array[Float],
     startingAngle: Float, from: Int, until: Int): Unit = {
-    ???
+
+    def scan(prevMax: Float, currentIndex: Int): Unit = {
+      if (currentIndex < until) {
+        output.update(currentIndex, lineOfSight(prevMax)(input(currentIndex), currentIndex))
+        scan(max(prevMax, output(currentIndex)), currentIndex + 1)
+      }
+    }
+
+    if (from == until) {}
+    else if (from == 0) {
+      output.update(0, 0f)
+      scan(startingAngle, from + 1)
+    } else {
+      scan(startingAngle, from)
+    }
+
   }
 
   /** Pushes the maximum angle in the prefix of the array to each leaf of the
