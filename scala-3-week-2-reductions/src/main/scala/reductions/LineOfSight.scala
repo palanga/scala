@@ -96,7 +96,15 @@ object LineOfSight {
    */
   def upsweep(input: Array[Float], from: Int, end: Int,
     threshold: Int): Tree = {
-    ???
+    if (end - from <= threshold || threshold == 0) Leaf(from, end, upsweepSequential(input, from, end))
+    else {
+      val splitPoint = from + (end - from) / 2
+      val (left, right) = parallel(
+        upsweep(input, from, splitPoint, threshold),
+        upsweep(input, splitPoint, end, threshold)
+      )
+      Node(left, right)
+    }
   }
 
   /** Traverses the part of the `input` array starting at `from` and until
