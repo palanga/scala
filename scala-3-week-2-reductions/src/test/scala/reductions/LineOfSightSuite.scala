@@ -39,6 +39,39 @@ class LineOfSightSuite extends FunSuite {
   }
 
 
+  test("upsweep empty") {
+
+    val input = Array[Float]()
+
+    assert(upsweep(input, 0, input length, 0) == Leaf(0, input length, 0))
+    assert(upsweep(input, 0, input length, 1) == Leaf(0, input length, 0))
+    assert(upsweep(input, 0, input length, 2) == Leaf(0, input length, 0))
+
+  }
+
+  test("upsweep [0, 2, 1, 5, 3, 2, 8, 7]") {
+
+    val input = Array[Float](0f, 2f, 1f, 5f, 3f, 2f, 8f, 7f)
+    val threshold = 4
+
+    val left = Leaf(0, 4, 2f)
+    val right = Leaf(4, 8, 4f/3f)
+
+    val expected = Node(left, right)
+    val actual = upsweep(input, 0, input length, threshold)
+
+    assert(actual == expected)
+
+    assert(expected.maxPrevious == upsweep(input, 0, input length, 1).maxPrevious)
+    assert(expected.maxPrevious == upsweep(input, 0, input length, 2).maxPrevious)
+    assert(expected.maxPrevious == upsweep(input, 0, input length, 3).maxPrevious)
+    assert(expected.maxPrevious == upsweep(input, 0, input length, 6).maxPrevious)
+    assert(expected.maxPrevious == upsweep(input, 0, input length, 7).maxPrevious)
+    assert(expected.maxPrevious == upsweep(input, 0, input length, 8).maxPrevious)
+
+  }
+
+
   test("downsweepSequential should correctly handle a 4 element array when the starting angle is zero") {
     val output = new Array[Float](4)
     downsweepSequential(Array[Float](0f, 1f, 8f, 9f), output, 0f, 1, 4)
