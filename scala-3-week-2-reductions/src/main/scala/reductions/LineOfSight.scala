@@ -3,6 +3,12 @@ package reductions
 import org.scalameter._
 import common._
 
+final class ChainingOps[A](private val self: A) extends AnyVal {
+  def pipe[B](f: A => B): B = f(self)
+
+  def |>[B](f: A => B): B = pipe(f)
+}
+
 object LineOfSightRunner {
   
   val standardConfig = config(
@@ -31,10 +37,30 @@ object LineOfSightRunner {
 
 object LineOfSight {
 
+  implicit class Pipe[A](a: A) {
+    def |>[B](f: A => B): B = f(a)
+  }
+
   def max(a: Float, b: Float): Float = if (a > b) a else b
 
+  def curriedMax(a: Float)(b: Float): Float = if (a > b) a else b
+
+  def tangent(o: Float, a: Float): Float = o / a
+
+  def curriedTangent(o: Float)(a: Float): Float = o / a
+
+  def lineOfSight(prevMax: Float)(o: Float, a: Float): Float = tangent(o, a) |> curriedMax(prevMax)
+
   def lineOfSight(input: Array[Float], output: Array[Float]): Unit = {
-    ???
+    def scan(prevMax: Float, currentIndex: Int): Unit = {
+      if (currentIndex < input.length) {
+        output.update(currentIndex, lineOfSight(prevMax)(input(currentIndex), currentIndex))
+        scan(max(prevMax, output(currentIndex)), currentIndex + 1)
+      }
+    }
+
+    output.update(0, 0f)
+    scan(0, 1)
   }
 
   sealed abstract class Tree {
@@ -42,7 +68,7 @@ object LineOfSight {
   }
 
   case class Node(left: Tree, right: Tree) extends Tree {
-    val maxPrevious = max(left.maxPrevious, right.maxPrevious)
+    val maxPrevious: Float = max(left.maxPrevious, right.maxPrevious)
   }
 
   case class Leaf(from: Int, until: Int, maxPrevious: Float) extends Tree

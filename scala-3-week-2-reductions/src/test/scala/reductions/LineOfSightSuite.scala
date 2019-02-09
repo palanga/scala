@@ -8,9 +8,19 @@ import org.scalatest.junit.JUnitRunner
 import common._
 import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory
 
-@RunWith(classOf[JUnitRunner]) 
+@RunWith(classOf[JUnitRunner])
 class LineOfSightSuite extends FunSuite {
+
   import LineOfSight._
+
+
+  test("single lineOfSight") {
+    assert(4 === lineOfSight(3)(8, 2))
+    assert(7 === lineOfSight(7)(8, 2))
+    assert(3 === lineOfSight(2)(6, 2))
+  }
+
+
   test("lineOfSight should correctly handle an array of size 4") {
     val output = new Array[Float](4)
     lineOfSight(Array[Float](0f, 1f, 8f, 9f), output)
