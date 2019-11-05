@@ -12,6 +12,7 @@ libraryDependencies ++= Seq(
   "com.storm-enroute" %% "scalameter-core" % "0.6",
   "com.github.scala-blitz" %% "scala-blitz" % "1.1",
   "org.scala-lang.modules" %% "scala-swing" % "1.0.1",
+  "dev.zio" %% "zio" % "1.0.0-RC16",
   "com.storm-enroute" %% "scalameter" % "0.6" % Test
 )
 
